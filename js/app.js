@@ -121,9 +121,9 @@ function WebTris() {
           self.moveShape('down');
         }
 
-        if(timeSinceFirstFrame < 60000) {
+        //if(timeSinceFirstFrame < 60000) {
           self.animReq = window.requestAnimationFrame(animLoop);
-        }
+        //}
       }
 
       self.animReq = window.requestAnimationFrame(animLoop);
