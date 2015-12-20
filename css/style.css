@@ -81,7 +81,11 @@
   width: 70px;
   height: 70px;
   background-color: gainsboro;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
+
 .btn-label {
   text-align: center;
   margin-top: 35%;
@@ -153,7 +157,6 @@ padding: 9px;
   visibility: hidden;
 }
 .menu-btn {
-
     border: 1px solid;
     background-color: gainsboro;
     text-align: center;
@@ -161,4 +164,7 @@ padding: 9px;
     height: 30px;
     padding-top: 12px;
     margin-top: 15px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
