@@ -1,0 +1,52 @@
+<!doctype html>
+
+<head>
+  <title>mobile-tetris FTW!</title>
+  <meta name="viewport" content="width=device-width initial-scale=1 maximum-scale=1 user-scalable=0">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/shape.js"></script>
+  <script src="js/display.js"></script>
+  <script src="js/app.js"></script>
+
+</head>
+
+<body>
+  <div class="main-container">
+
+    <canvas id="main-canvas" class="canvas-stack main-canvas"></canvas>
+    <canvas id="secondary-canvas" class="canvas-stack secondary-canvas"></canvas>
+
+    <div class="info-container">
+      <div class="next-shape">
+        <div class="next-shape-title">Next</div>
+        <canvas id="next-shape-canvas" class="next-shape-canvas"></canvas>
+      </div>
+      <div class="points">
+        <div class="points-title">Points</div>
+        <span id="points-value" class="points-value">000000</span>
+      </div>
+      <div class="level">
+        <div class="level-title">Level</div>
+        <span class="level-value">1</span>
+      </div>
+      <div class="menu-btn">Menu</div>
+    </div>
+
+    <div class="controls-container">
+      <div class="control-btn move-left-btn"><div class="btn-label">left</div></div>
+      <div class="control-btn move-right-btn"><div class="btn-label">right</div></div>
+      <div class="control-btn rotate-btn"><div class="btn-label">rotate</div></div>
+      <div class="control-btn drop-btn"><div class="btn-label">drop</div></div>
+    </div>
+    <div class="modal-overlay hidden"></div>
+    <div class="modal-container hidden">
+      <div class="modal-title">PAUSED</div>
+      <div class="modal-option resume-btn">resume</div>
+      <div class="modal-option restart-btn">restart</div>
+      <div class="modal-highscore">High-Score:<div class="highscore-text">???</div></div>
+    </div>
+  </div>
+</body>
+
+</html>
