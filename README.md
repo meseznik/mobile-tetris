@@ -4,7 +4,9 @@ A simple Tetris game for a mobile browser (on desktop use arrows+spacebar). [Dem
 ### To do
 #### Game
 - Level increment
-- Save Highscore localy
+- End game scenario
+- Display highscore in menu
+- Save highscore localy
 - Allow to save as an app, webmanifest
 - Nicer UI
 - Dynamic screen size
