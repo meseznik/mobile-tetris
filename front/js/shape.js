@@ -70,3 +70,5 @@ Shape.prototype.getRotationTiles = function () {
     }
     return tiles;
 }
+
+module.exports = Shape;

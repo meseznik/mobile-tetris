@@ -1,3 +1,6 @@
+var Display = require('./display');
+var Shape = require('./shape');
+
 function WebTris() {
 
     var TILE_RATIO = 20,  // Size of blocks/tiles

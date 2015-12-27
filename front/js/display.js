@@ -65,3 +65,4 @@ Display.prototype.drawShapes = function(shapes){
     }
 }
 
+module.exports = Display;

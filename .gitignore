@@ -40,3 +40,7 @@ Thumbs.db
 node_modules
 .npm-debug.log
 tmp
+
+# GENERAL
+.publish/
+build/
