@@ -1,2 +1,531 @@
-!function e(t,i,n){function s(o,r){if(!i[o]){if(!t[o]){var l="function"==typeof require&&require;if(!r&&l)return l(o,!0);if(a)return a(o,!0);var h=new Error("Cannot find module '"+o+"'");throw h.code="MODULE_NOT_FOUND",h}var c=i[o]={exports:{}};t[o][0].call(c.exports,function(e){var i=t[o][1][e];return s(i?i:e)},c,c.exports,e,t,i,n)}return i[o].exports}for(var a="function"==typeof require&&require,o=0;o<n.length;o++)s(n[o]);return s}({1:[function(e,t,i){function n(){var e,t,i=20,n=10,o=250,r=16,l=150,h=350,c=1,d=5,y=50,u={x:220,y:380},p={x:50,y:50},m={x:100,y:0},g={x:10,y:10},f=new s(document.getElementById("main-canvas"),i,u,m),v=new s(document.getElementById("secondary-canvas"),i,u,m),_=new s(document.getElementById("next-shape-canvas"),n,p,g),x=document.getElementById("points-value"),w=[],C=0,S=this;this.init=function(){this.assignControls(),this.stepNextShape(),this.startAnimation()},this.assignControls=function(){function e(e){"38"==e.keyCode?S.moveShape("rotate"):"32"==e.keyCode?S.beginDrop():"37"==e.keyCode?S.moveShape("left"):"39"==e.keyCode&&S.moveShape("right")}document.onkeydown=e;var t=document.getElementsByClassName("move-left-btn")[0],i=document.getElementsByClassName("move-right-btn")[0],n=document.getElementsByClassName("rotate-btn")[0],s=document.getElementsByClassName("drop-btn")[0],a=document.getElementsByClassName("menu-btn")[0],o=document.getElementsByClassName("resume-btn")[0],r=document.getElementsByClassName("restart-btn")[0];t.addEventListener("touchstart",function(){S.moveShape("left")},!1),i.addEventListener("touchstart",function(){S.moveShape("right")},!1),n.addEventListener("touchstart",function(){S.moveShape("rotate")},!1),s.addEventListener("touchstart",function(){S.beginDrop()},!1),a.addEventListener("touchstart",function(){S.openMenu()},!1),a.addEventListener("click",function(){S.openMenu()},!1),o.addEventListener("touchstart",function(){S.resumeGame()},!1),o.addEventListener("click",function(){S.resumeGame()},!1),r.addEventListener("touchstart",function(){S.restartGame()},!1),r.addEventListener("click",function(){S.restartGame()},!1)},this.openMenu=function(){window.cancelAnimationFrame(S.animReq),S.showModal()},this.resumeGame=function(){S.hideModal(),S.startAnimation()},this.restartGame=function(){w=[],e=null,f.clearDisplay(),v.clearDisplay(),this.resetPoints(),S.stepNextShape(),S.resumeGame()},this.showModal=function(){var e=document.getElementsByClassName("modal-overlay")[0],t=document.getElementsByClassName("modal-container")[0];e.className=e.className.replace(/hidden/,""),t.className=t.className.replace(/hidden/,"")},this.hideModal=function(){var e=document.getElementsByClassName("modal-overlay")[0],t=document.getElementsByClassName("modal-container")[0];e.className=e.className+" hidden",t.className=t.className+" hidden"},this.getHighScore=function(){},this.startAnimation=function(){function e(e){i=Date.now(),n||(n=i),t(e)}function t(t){i-n>S.getGameSpeed()&&(n=i,S.moveShape("down")),6e4>t&&(S.animReq=window.requestAnimationFrame(e))}var i,n;S.animReq=window.requestAnimationFrame(e)},this.beginDrop=function(){e._isDropping=!0},this.getGameSpeed=function(){var t=o;return e._isDropping?t=r:e._isLanding?t=l:e._isAnimating&&(t=h),t},this.moveShape=function(t){var n,s,a={x:e._origin.x,y:e._origin.y},o=e._tiles;if("down"===t?(a.y+=i,this.updatePoints()):"left"===t?a.x-=i:"right"===t?a.x+=i:"rotate"===t&&(o=e.getRotationTiles()),borderCol=this.borderCollision(a,o),shapeCol=this.shapeCollision(a,o),borderCol||shapeCol){if("bottom"===borderCol||"down"===t&&shapeCol===!0){s=JSON.parse(JSON.stringify(w)),n=JSON.parse(JSON.stringify(e)),s.push(n);var r=this.linesToClear(s,n._origin,n._tiles);e._isDropping&&!r.linesCleared.length?(e._isDropping=!1,e._isLanding=!0):!e._isAnimating&&r.linesCleared.length?(this.animateLineClear(r.linesCleared),e._isDropping=!1,e._isLanding=!1,e._isAnimating=!0):(w=s,v.clearDisplay(),f.clearDisplay(),this.redrawSecondaryDisplay(),this.updatePoints(r.linesCleared.length),this.stepNextShape(),f.drawShape(e))}}else f.clearDisplay(),e._origin=a,e._tiles=o,f.drawShape(e)},this.stepNextShape=function(){e?e=t:(e=new a(f._drawingOrigin),f.drawShape(e)),t=new a(f._drawingOrigin),_.clearDisplay(),_.drawShape(t,!0)},this.resetPoints=function(){C=0,this.updateUIpoints()},this.updatePoints=function(e){C+=e?e*y:this.getGameSpeed()===r?d:c,this.updateUIpoints()},this.updateUIpoints=function(){for(var e=C.toString();e.length<6;)e="0"+e;x.innerHTML=e},this.shapeCollision=function(e,t){for(var n=0;n<w.length;n++)for(var s=w[n],a=0;a<s._tiles.length;a++)for(var o=s._tiles[a],r=s._origin.x+o.x*i,l=s._origin.y+o.y*i,h=0;h<t.length;h++){var c=e.x+t[h].x*i,d=e.y+t[h].y*i;if(r==c&&l==d)return!0}},this.borderCollision=function(e,t){for(var n=0,s=0,a=0,o=0;o<t.length;o++){var r=e.x+t[o].x*i,l=e.x+t[o].x*i+i,h=(e.y+t[o].y*i,e.y+t[o].y*i+i);0>r&&n>r&&(n=r),l>u.x&&l>s&&(s=l),0>r&&n>r&&(n=r),h>u.y&&h>a&&(a=h)}return s>0||0>n?"sides":a>0?"bottom":void 0},this.linesToClear=function(e,t,n){for(var s=[],a=Math.floor(u.x/i),o=[],r=0;r<n.length;r++){for(var l=!1,h=0;h<s.length;h++)t.y+n[r].y*i===s[h].lineY&&(l=!0);if(!l){var c={lineY:t.y+n[r].y*i,tilesInLine:0};s.push(c)}}for(var r=0;r<e.length;r++)for(var h=0;h<e[r]._tiles.length;h++)for(var d=e[r]._origin.y+e[r]._tiles[h].y*i,y=0;y<s.length;y++)d===s[y].lineY&&s[y].tilesInLine++;for(var r=0;r<s.length;r++)if(s[r].tilesInLine===a){var p=s[r].lineY;o.push(s[r]);for(var h=0;h<e.length;h++)for(var y=e[h]._tiles.length;y--;){var d=e[h]._origin.y+e[h]._tiles[y].y*i;p>d?e[h]._tiles[y].y+=1:d===p&&e[h]._tiles.splice(y,1)}}return{shapesArr:e,linesCleared:o}},this.animateLineClear=function(e){var t=0,n=f._ctx,s=setInterval(function(){n.fillStyle="rgba(255, 255, 255, "+t+")",n.fillRect(0,e[0].lineY,f._size.x,e.length*i),t+=.1,t>=1&&clearInterval(s)},25)},this.redrawSecondaryDisplay=function(){v.clearDisplay(),v.drawShapes(w)}}var s=e("./display"),a=e("./shape");window.onload=function(){var e=new n;e.init()}},{"./display":2,"./shape":3}],2:[function(e,t,i){function n(e,t,i,n){this._canvasEl=e,this._tileRatio=t,this._size=i,this._drawingOrigin=n,this._canvasEl.setAttribute("width",this._size.x),this._canvasEl.setAttribute("height",this._size.y),this._ctx=this._canvasEl.getContext("2d")}n.prototype.clearDisplay=function(){this._ctx.clearRect(0,0,this._canvasEl.width,this._canvasEl.height)},n.prototype.drawShape=function(e,t){var i,n=e._tiles,s=this._ctx;i=t?this._drawingOrigin:e._origin,s.fillStyle=e._color;for(var a=0;a<n.length;a++){s.fillRect(i.x+n[a].x*this._tileRatio,i.y+n[a].y*this._tileRatio,this._tileRatio,this._tileRatio);var o=i.x+n[a].x*this._tileRatio,r=i.y+n[a].y*this._tileRatio;s.strokeStyle="white",s.lineWidth=2,s.beginPath(),s.moveTo(o,r),s.lineTo(o+this._tileRatio,r),s.lineTo(o+this._tileRatio,r+this._tileRatio),s.lineTo(o+this._tileRatio,r+this._tileRatio),s.lineTo(o,r+this._tileRatio),s.closePath(),s.stroke()}},n.prototype.drawShapes=function(e){for(var t=0;t<e.length;t++)this.drawShape(e[t])},t.exports=n},{}],3:[function(e,t,i){function n(e,t){var i=[{type:"line",color:"blue",tiles:[{x:1,y:0},{x:1,y:1},{x:1,y:2},{x:1,y:3}]},{type:"square",color:"green",tiles:[{x:0,y:0},{x:1,y:0},{x:1,y:1},{x:0,y:1}]},{type:"plus",color:"red",tiles:[{x:1,y:0},{x:0,y:1},{x:1,y:1},{x:2,y:1}]},{type:"rightL",color:"yellow",tiles:[{x:1,y:0},{x:1,y:1},{x:1,y:2},{x:2,y:2}]},{type:"leftL",color:"orange",tiles:[{x:1,y:0},{x:1,y:1},{x:1,y:2},{x:0,y:2}]},{type:"rightS",color:"gray",tiles:[{x:0,y:0},{x:0,y:1},{x:1,y:1},{x:1,y:2}]},{type:"leftS",color:"black",tiles:[{x:1,y:0},{x:1,y:1},{x:0,y:1},{x:0,y:2}]}],n=i[i.length*Math.random()<<0];if(this._color=n.color,this._tiles=JSON.parse(JSON.stringify(n.tiles)),this._isDropping=!1,this._isLanding=!1,this._isAnimating=!1,this._origin=e||{x:0,y:0},t){var s;this._tiles.forEach(function(e){(!s||s<e.y)&&(s=e.y)}),this._origin.y=(3-s)*t+4*-t,console.log(this._origin.y)}}n.prototype.getRotationTiles=function(){for(var e=[],t=0;t<this._tiles.length;t++){var i=this._tiles[t].x,n=this._tiles[t].y;e[t]={},e[t].x=2-n,e[t].y=i}return e},t.exports=n},{}]},{},[1]);
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var Display = require('./display');
+var Shape = require('./shape');
+
+function WebTris() {
+
+    var TILE_RATIO = 20,  // Size of blocks/tiles
+        SMALL_TILE_RATIO = 10,  // Next tile screen on the right
+        GAME_SPEED = 250, // MS between redraws
+        SHAPE_DROP_GAME_SPEED = 16, // Top speed, when dropping
+        SHAPE_LANDING_GAME_SPEED = 150, // Allows for a small delay before shape anchored
+        SHAPE_ANIMATING_SPEED = 350, // length of line drop animation
+        STEP_POINTS = 1, // Points gained by having the shape move one game revolution down
+        ALT_STEP_POINTS = 5, // Points gained for faster game revolution
+        LINE_CLEAR_POINTS = 50, // Points gained for clearing a single line
+        DISPLAY_SIZE = {x:220, y:380}, 
+        SMALL_DISPLAY_SIZE = {x:50, y:50},
+        DISPLAY_ORIGIN = {x:100, y:0},
+        SMALL_DISPLAY_ORIGIN = {x:10, y:10};
+
+    var mainDisplay = new Display(document.getElementById('main-canvas'), TILE_RATIO, DISPLAY_SIZE, DISPLAY_ORIGIN),
+        secondaryDisplay = new Display(document.getElementById('secondary-canvas'), TILE_RATIO, DISPLAY_SIZE, DISPLAY_ORIGIN),
+        nextDisplay = new Display(document.getElementById('next-shape-canvas'), SMALL_TILE_RATIO, SMALL_DISPLAY_SIZE, SMALL_DISPLAY_ORIGIN),
+        pointsEl = document.getElementById('points-value'),
+        currentShape,
+        nextShape,
+        pastShapes = [],
+        points = 0;
+
+    var self = this;
+
+    this.init = function() {
+      this.assignControls();
+      this.stepNextShape();
+      this.startAnimation();
+    }
+
+    this.assignControls = function() {
+      document.onkeydown = checkKey;
+      function checkKey(e) {
+        if (e.keyCode == '38') {
+          self.moveShape('rotate');
+        } else if (e.keyCode == '32') {
+          self.beginDrop();
+        } else if (e.keyCode == '37') {
+          self.moveShape('left');
+        } else if (e.keyCode == '39') {
+          self.moveShape('right');
+        }
+      }
+
+      var leftBtn   = document.getElementsByClassName('move-left-btn')[0];
+      var rightBtn  = document.getElementsByClassName('move-right-btn')[0];
+      var rotateBtn = document.getElementsByClassName('rotate-btn')[0];
+      var dropBtn   = document.getElementsByClassName('drop-btn')[0];
+      var menuBtn   = document.getElementsByClassName('menu-btn')[0];
+      var resumeBtn = document.getElementsByClassName('resume-btn')[0];
+      var restartBtn  = document.getElementsByClassName('restart-btn')[0];
+
+      leftBtn.addEventListener('touchstart', function(){self.moveShape('left')}, false);
+      rightBtn.addEventListener('touchstart', function(){self.moveShape('right')}, false);
+      rotateBtn.addEventListener('touchstart', function(){self.moveShape('rotate')}, false);
+      dropBtn.addEventListener('touchstart', function(){self.beginDrop()}, false);
+      menuBtn.addEventListener('touchstart', function(){self.openMenu()}, false);
+      menuBtn.addEventListener('click', function(){self.openMenu()}, false);
+      resumeBtn.addEventListener('touchstart', function(){self.resumeGame()}, false);
+      resumeBtn.addEventListener('click', function(){self.resumeGame()}, false);
+      restartBtn.addEventListener('touchstart', function(){self.restartGame()}, false);
+      restartBtn.addEventListener('click', function(){self.restartGame()}, false);
+
+    }
+
+    this.openMenu = function() {
+      window.cancelAnimationFrame(self.animReq);
+      self.showModal();
+    }
+
+    this.resumeGame = function() {
+      self.hideModal();
+      self.startAnimation();
+    }
+
+    this.restartGame = function() {
+      pastShapes = [];
+      currentShape = null;
+      mainDisplay.clearDisplay();
+      secondaryDisplay.clearDisplay();
+      this.resetPoints();
+      self.stepNextShape(); 
+      self.resumeGame();
+    }
+
+    this.showModal = function() {
+      var modalOverlay = document.getElementsByClassName('modal-overlay')[0];
+      var modalContainer = document.getElementsByClassName('modal-container')[0];
+      modalOverlay.className = modalOverlay.className.replace(/hidden/,'');
+      modalContainer.className = modalContainer.className.replace(/hidden/,'');
+    }
+
+    this.hideModal = function() {
+      var modalOverlay = document.getElementsByClassName('modal-overlay')[0];
+      var modalContainer = document.getElementsByClassName('modal-container')[0];
+      modalOverlay.className = modalOverlay.className + ' hidden';
+      modalContainer.className = modalContainer.className + ' hidden';
+    }
+
+    this.getHighScore = function() {
+
+    }
+
+    this.startAnimation = function() {
+      var running = true,
+          timeAtLastLoop,
+          timeAtLastRender;
+
+      function animLoop(timeSinceFirstFrame) {
+        timeAtLastLoop = Date.now();
+        if(!timeAtLastRender) timeAtLastRender = timeAtLastLoop;
+        render(timeSinceFirstFrame);
+      }
+
+      function render(timeSinceFirstFrame) {
+        if(timeAtLastLoop - timeAtLastRender > self.getGameSpeed()) {
+          timeAtLastRender = timeAtLastLoop;
+          self.moveShape('down');
+        }
+
+        // if(timeSinceFirstFrame < 60000) {
+        //   self.animReq = window.requestAnimationFrame(animLoop);
+        // }
+      }
+
+      self.animReq = window.requestAnimationFrame(animLoop);
+    }
+
+    this.beginDrop = function() {
+      currentShape._isDropping = true;
+    }
+
+    this.getGameSpeed = function() {
+      var speed = GAME_SPEED;
+      if(currentShape._isDropping) {
+        speed = SHAPE_DROP_GAME_SPEED;
+      } else if(currentShape._isLanding) {
+        speed = SHAPE_LANDING_GAME_SPEED;
+      } else if(currentShape._isAnimating) {
+        speed = SHAPE_ANIMATING_SPEED;
+      }
+      return speed;
+    }
+
+    this.moveShape = function(direction) {
+      var newOrigin = { x:currentShape._origin.x, y:currentShape._origin.y },
+          newTiles = currentShape._tiles,
+          bor,
+          col,
+          linesCleared,
+          shapeTemp,
+          pastShapesTemp;
+
+      if(direction === 'down') {
+        newOrigin.y += TILE_RATIO;
+        this.updatePoints();
+      } else if(direction === 'left') {
+        newOrigin.x -= TILE_RATIO;
+      } else if(direction === 'right') {
+        newOrigin.x += TILE_RATIO;
+      } else if(direction === 'rotate') {
+        newTiles = currentShape.getRotationTiles();
+      }
+
+      borderCol = this.borderCollision(newOrigin, newTiles);
+      shapeCol = this.shapeCollision(newOrigin, newTiles);
+
+      if(!borderCol && !shapeCol) {
+        mainDisplay.clearDisplay();
+        currentShape._origin = newOrigin;
+        currentShape._tiles = newTiles;
+        mainDisplay.drawShape(currentShape);
+      } else if (borderCol === 'bottom' || (direction === 'down' && shapeCol === true) ) {
+
+          pastShapesTemp  = JSON.parse(JSON.stringify(pastShapes));
+          shapeTemp       = JSON.parse(JSON.stringify(currentShape));
+          pastShapesTemp.push(shapeTemp);
+          var linesObj    = this.linesToClear(pastShapesTemp, shapeTemp._origin, shapeTemp._tiles);
+
+
+          if(currentShape._isDropping && !linesObj.linesCleared.length) {
+            currentShape._isDropping = false;
+            currentShape._isLanding = true;
+          } else if (!currentShape._isAnimating && linesObj.linesCleared.length) {
+              this.animateLineClear(linesObj.linesCleared);
+              currentShape._isDropping = false;
+              currentShape._isLanding = false;
+              currentShape._isAnimating = true;
+          } else {
+            pastShapes = pastShapesTemp;
+            secondaryDisplay.clearDisplay();
+            mainDisplay.clearDisplay();
+            this.redrawSecondaryDisplay();
+            this.updatePoints(linesObj.linesCleared.length);
+            this.stepNextShape();
+            mainDisplay.drawShape(currentShape);    
+          }
+      }
+    }
+
+    this.stepNextShape = function() {
+      if(!currentShape) {
+        currentShape = new Shape(mainDisplay._drawingOrigin);
+        mainDisplay.drawShape(currentShape);
+      } else {
+        currentShape = nextShape;
+      }
+      nextShape = new Shape(mainDisplay._drawingOrigin);
+      nextDisplay.clearDisplay();
+      nextDisplay.drawShape(nextShape, true);
+    }
+
+    this.resetPoints = function() {
+      points = 0;
+      this.updateUIpoints();
+    }
+
+    this.updatePoints = function(linesCleared) {
+      if(linesCleared) {
+        points += linesCleared * LINE_CLEAR_POINTS;
+      } else {
+        if(this.getGameSpeed() === SHAPE_DROP_GAME_SPEED) {
+          points += ALT_STEP_POINTS;
+        } else {
+          points += STEP_POINTS;
+        }
+      }
+      this.updateUIpoints();
+    }
+
+    this.updateUIpoints = function() {
+      var pointsString = points.toString();
+      while (pointsString.length < 6) {
+        pointsString = '0'+pointsString;
+      }
+      pointsEl.innerHTML = pointsString;
+    }
+
+    this.shapeCollision = function(origin, tiles) {
+      for(var i = 0; i < pastShapes.length; i++) {
+        var pShape = pastShapes[i];
+
+        for(var j = 0; j < pShape._tiles.length; j++) {
+          var pTile = pShape._tiles[j];
+          var pastX = pShape._origin.x + pTile.x*TILE_RATIO;
+          var pastY = pShape._origin.y + pTile.y*TILE_RATIO;
+
+          for(var k = 0; k < tiles.length; k++) {
+            var newX = origin.x + tiles[k].x*TILE_RATIO;
+            var newY = origin.y + tiles[k].y*TILE_RATIO;
+            if(pastX == newX && pastY == newY ) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+
+    this.borderCollision = function(origin, tiles) {
+      var colLeft = 0;
+      var colRight = 0;
+      var colTop = 0;
+      var colBottom = 0;
+
+      for (var i = 0; i < tiles.length; i++) {
+        var left    = origin.x + tiles[i].x*TILE_RATIO;
+        var right   = origin.x + tiles[i].x*TILE_RATIO + TILE_RATIO;
+        var top     = origin.y + tiles[i].y*TILE_RATIO;
+        var bottom  = origin.y + tiles[i].y*TILE_RATIO + TILE_RATIO;
+
+        if(left < 0 && left < colLeft) {
+          colLeft = left;
+        }
+        if(right > DISPLAY_SIZE.x && right > colRight) {
+          colRight = right;
+        }
+        if(left < 0 && left < colLeft) {
+          colLeft = left;
+        }
+        if(bottom > DISPLAY_SIZE.y && bottom > colBottom) {
+          colBottom = bottom;
+        }
+      }
+
+      if(colRight > 0 || colLeft < 0) {
+        return 'sides';
+      } else if (colBottom > 0) {
+        return 'bottom';
+      }
+    }
+
+    this.linesToClear = function(shapesArr, origin, tiles) {
+      //get affected lines
+      var lines = [];
+      var maxTilesInLine = Math.floor(DISPLAY_SIZE.x / TILE_RATIO);
+      var linesCleared = [];
+
+      // mark the lines affected by current landed shape tiles
+      for (var i = 0; i < tiles.length; i++) {
+        var lineExists = false;
+        for (var j = 0; j < lines.length; j++) {
+         if(origin.y+tiles[i].y*TILE_RATIO === lines[j].lineY) lineExists = true;
+        }
+        if(!lineExists) {
+          var myObj = {lineY: origin.y+tiles[i].y*TILE_RATIO, tilesInLine:0};
+          lines.push(myObj);
+        }
+      }
+
+      // iterate all the shapes and their tiles, count tiles in each marked line (more efficient than checking all shapes)
+      for (var i = 0; i < shapesArr.length; i++) {
+        for(var j = 0; j < shapesArr[i]._tiles.length; j++) {
+          var tileY = shapesArr[i]._origin.y + shapesArr[i]._tiles[j].y*TILE_RATIO;
+
+          for (var k = 0; k < lines.length; k++) {
+           if(tileY === lines[k].lineY) {
+             lines[k].tilesInLine++;
+           }
+          }
+        }
+      }
+
+      // erase tiles from full lines, update rest of other tiles' Y to be a line lower
+      for (var i = 0; i < lines.length; i++) {
+
+        if(lines[i].tilesInLine === maxTilesInLine) {
+          var eraseY = lines[i].lineY;
+          linesCleared.push(lines[i]);
+
+          for (var j = 0; j < shapesArr.length; j++) {
+            var k = shapesArr[j]._tiles.length;
+
+            while(k--) {
+              var tileY = shapesArr[j]._origin.y + shapesArr[j]._tiles[k].y*TILE_RATIO;
+
+              if(tileY < eraseY) {
+                shapesArr[j]._tiles[k].y += 1;
+              }
+              else if (tileY === eraseY){
+                shapesArr[j]._tiles.splice(k,1);
+              }
+            }
+          }
+        }
+
+      }
+
+      return {shapesArr:shapesArr, linesCleared:linesCleared};
+    }
+
+    this.animateLineClear = function(linesCleared) {
+    var alpha = 0;
+    var ctx = mainDisplay._ctx;
+    var interval = setInterval(function () {
+            ctx.fillStyle = "rgba(255, 255, 255, " + alpha + ")";
+            ctx.fillRect(0, linesCleared[0].lineY, mainDisplay._size.x, linesCleared.length*TILE_RATIO);
+            alpha = alpha + 0.1; 
+            if (alpha >= 1) {
+                clearInterval(interval);
+            }
+        }, 25); 
+
+    }
+
+    this.redrawSecondaryDisplay = function() {
+      secondaryDisplay.clearDisplay();
+      secondaryDisplay.drawShapes(pastShapes);
+    }
+
+}
+
+window.onload = function(){
+  var game = new WebTris();
+      game.init();
+}
+
+},{"./display":2,"./shape":3}],2:[function(require,module,exports){
+function Display(canvasEl, tileRatio, size, drawingOrigin) {
+  // initing draw scrrren
+  this._canvasEl = canvasEl;
+  this._tileRatio = tileRatio;
+  this._size = size;
+  this._drawingOrigin = drawingOrigin;
+
+  // inittin our draw area
+  this._canvasEl.setAttribute('width', this._size.x);
+  this._canvasEl.setAttribute('height', this._size.y);
+
+  // setting the context
+  this._ctx = this._canvasEl.getContext('2d');
+}
+
+
+Display.prototype.clearDisplay = function() {
+  this._ctx.clearRect(0,0,this._canvasEl.width, this._canvasEl.height);
+}
+
+
+Display.prototype.drawShape = function(shape, useDisplayOrigin){
+  var tiles = shape._tiles,
+      origin,
+      ctx = this._ctx;
+
+  if (useDisplayOrigin){ 
+    origin = this._drawingOrigin;
+  } else {
+    origin = shape._origin;
+  }
+
+  ctx.fillStyle = shape._color;
+
+  for (var i = 0; i < tiles.length; i++) {
+    ctx.fillRect(
+      origin.x + tiles[i].x*this._tileRatio,
+      origin.y + tiles[i].y*this._tileRatio,
+      this._tileRatio,
+      this._tileRatio);
+
+    var tileStartX  = origin.x + tiles[i].x*this._tileRatio;
+    var tileStartY  = origin.y + tiles[i].y*this._tileRatio;
+
+    ctx.strokeStyle='white';
+    ctx.lineWidth = 2;
+
+    ctx.beginPath();
+    ctx.moveTo(tileStartX, tileStartY);
+    ctx.lineTo(tileStartX+this._tileRatio, tileStartY);
+    ctx.lineTo(tileStartX+this._tileRatio, tileStartY+this._tileRatio);
+    ctx.lineTo(tileStartX+this._tileRatio, tileStartY+this._tileRatio);
+    ctx.lineTo(tileStartX, tileStartY+this._tileRatio);
+    ctx.closePath();
+    ctx.stroke();
+
+  }
+
+}
+
+
+Display.prototype.drawShapes = function(shapes){
+    for(var i = 0; i < shapes.length; i++) {
+      this.drawShape(shapes[i]);
+    }
+}
+
+module.exports = Display;
+},{}],3:[function(require,module,exports){
+function Shape(origin, tileRatio) {
+  var allShapes = [
+  {
+    type:  'line',
+    color: 'blue',
+    tiles: [{x:1, y:0}, {x:1, y:1},{x:1, y:2},{x:1, y:3}]
+  },
+  {
+    type:  'square',
+    color: 'green',
+    tiles: [{x:0, y:0}, {x:1, y:0}, {x:1, y:1}, {x:0, y:1}]
+  },
+  {
+    type:  'plus',
+    color: 'red',
+    tiles: [{x:1, y:0}, {x:0, y:1}, {x:1, y:1}, {x:2, y:1}]
+  },
+  {
+    type:  'rightL',
+    color: 'yellow',
+    tiles: [{x:1, y:0}, {x:1, y:1}, {x:1, y:2}, {x:2, y:2}]
+  },
+  {
+    type:  'leftL',
+    color: 'orange',
+    tiles: [{x:1, y:0}, {x:1, y:1}, {x:1, y:2}, {x:0, y:2}]
+  },
+  {
+    type:  'rightS',
+    color: 'gray',
+    tiles: [{x:0, y:0}, {x:0, y:1}, {x:1, y:1}, {x:1, y:2}]
+  },
+  {
+    type:  'leftS',
+    color: 'black',
+    tiles: [{x:1, y:0}, {x:1, y:1}, {x:0, y:1}, {x:0, y:2}]
+  }];
+
+  var randomShape = allShapes[allShapes.length * Math.random() << 0];
+  this._color = randomShape.color;
+  this._tiles = JSON.parse(JSON.stringify(randomShape.tiles));
+  this._isDropping = false;
+  this._isLanding = false;
+  this._isAnimating = false;
+  this._origin = origin || {x: 0, y: 0};
+  
+  if(tileRatio){ //make Y the same so it'll fit nicely when emerges from the top
+    var topY;
+    this._tiles.forEach(function(tile){
+      if(!topY || topY < tile.y) {
+        topY = tile.y;
+      }
+    });
+    this._origin.y = ((3-topY)*tileRatio + 4*-tileRatio);
+    console.log(this._origin.y);
+  }
+
+}
+
+Shape.prototype.getRotationTiles = function () {
+    var tiles = [];
+    for (var i = 0; i < this._tiles.length; i++) {
+      var tilex = this._tiles[i].x;
+      var tiley = this._tiles[i].y;
+      tiles[i] = {};
+      tiles[i].x = 2 - tiley;
+      tiles[i].y = tilex;
+      //x2 = px + (x1-px)*cos(q)-(y1-py)*sin(q);
+      //y2 = py + (x1-px)*sin(q)+(y1-py)*cos(q);
+    }
+    return tiles;
+}
+
+module.exports = Shape;
+},{}]},{},[1])
+
+
 //# sourceMappingURL=bundle.js.map
